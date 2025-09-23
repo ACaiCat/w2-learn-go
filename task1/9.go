@@ -4,14 +4,14 @@ import (
 	"fmt"
 )
 
-// generate 生成从2开始的整数序列，并且向管道逐一发送
+// generate 生成从2开始的整数序列，并且向管道逐一发送。
 func generate(ch chan int) {
 	for i := 2; ; i++ {
 		ch <- i
 	}
 }
 
-// filter 过滤可以被当前filter储存prime整除的数
+// filter 过滤可以被当前filter储存prime整除的数。
 // 从in管道接受从generate或者其他goroutine的filter传来的数，
 // 并且排除掉可以被当前prime整除的数，并传给out管道输出或者传递给下一个goroutine的filter
 func filter(in chan int, out chan int, prime int) {
