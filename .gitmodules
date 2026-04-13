@@ -1,0 +1,9 @@
+[submodule "work4"]
+	path = work4
+	url = https://github.com/ACaiCat/tiktok-go.git
+[submodule "work5"]
+	path = work5
+	url = https://github.com/ACaiCat/tiktok-go.git
+[submodule "work3"]
+	path = work3
+	url = https://github.com/ACaiCat/go-memo-server.git

@@ -3,6 +3,7 @@ package main
 import "C"
 import (
     "fmt"
+    "io"
     "net/http"
     "slices"
     "strconv"
@@ -57,6 +58,27 @@ func main() {
     fmt.Printf("Crawler get %d records", len(notices))
 }
 
+func fetchClick(client *http.Client, notice *Notice, clickId int, owner int) {
+    response, err := client.Get(baseUrl + fmt.Sprintf("system/resource/code/news/click/dynclicks.jsp?clickid=%d&owner=%d&clicktype=wbnews", clickId, owner))
+    if err != nil {
+        fmt.Println("Error on get click: " + err.Error())
+        return
+    }
+    defer response.Body.Close()
+    clickBytes, err := io.ReadAll(response.Body)
+    if err != nil {
+        fmt.Println("Error on get click: " + err.Error())
+        return
+    }
+    click, err := strconv.Atoi(string(clickBytes))
+    if err != nil {
+        fmt.Println("Error on get click: " + err.Error())
+        return
+    }
+    notice.ClickTimes = click
+
+}
+
 func fetchPage(client *http.Client, wg *sync.WaitGroup, notice *Notice) {
     fmt.Println("Get " + notice.URL)
     response, err := client.Get(notice.URL)
@@ -68,6 +90,10 @@ func fetchPage(client *http.Client, wg *sync.WaitGroup, notice *Notice) {
 
     doc, err := goquery.NewDocumentFromReader(response.Body)
     notice.Body = doc.Find("#vsb_content").Text()
+    var clickId, owner int
+    _, _ = fmt.Sscanf(doc.Find("body > div.wa1200w > div.conth > form > div.conthsj > script").Text(),
+        `_showDynClicks("wbnews", %d, %d)`, &owner, &clickId)
+    fetchClick(client, notice, clickId, owner)
     wg.Done()
 }
 
