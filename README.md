@@ -34,7 +34,7 @@
 
 基于Hertz框架的备忘录后端，三层架构（Handler / Service / Repository），使用PostgreSQL+Redis，JWT鉴权，Swagger文档。
 
- [README](work3/README.md) | [API文档](work3/docs/API.md)
+[主页](https://github.com/ACaiCat/go-memo-server/tree/master) | [README](https://github.com/ACaiCat/go-memo-server/tree/master/README.md) | [API文档](https://github.com/ACaiCat/go-memo-server/tree/master/docs/API.md)
 
 ### work4 — tiktok-go
 
